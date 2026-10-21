@@ -1,0 +1,270 @@
+
+<style>
+  .hero {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    line-height: 0;
+  }
+
+  .hero > img {
+    position: relative;
+    z-index: 0;
+    display: block;
+    width: 100%;
+    height: auto;
+    animation:
+      heroReveal 1.2s cubic-bezier(.2,.7,.2,1) both,
+      heroDrift 18s ease-in-out 1.2s infinite alternate;
+  }
+
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      115deg,
+      rgba(255,255,255,0.12),
+      transparent 35%,
+      rgba(184,155,104,0.12) 70%,
+      transparent
+    );
+    mix-blend-mode: screen;
+    animation: heroGlow 8s ease-in-out infinite alternate;
+  }
+
+  .hero::after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    top: -35%;
+    left: -55%;
+    width: 32%;
+    height: 170%;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.42),
+      rgba(255,245,220,.18),
+      transparent
+    );
+    transform: rotate(18deg);
+    animation: heroSweep 7s ease-in-out 1.5s infinite;
+  }
+
+  @keyframes heroReveal {
+    from {
+      opacity: 0;
+      transform: scale(1.035);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes heroDrift {
+    from { transform: scale(1); }
+    to { transform: scale(1.035); }
+  }
+
+  @keyframes heroGlow {
+    from { opacity: .25; }
+    to { opacity: .8; }
+  }
+
+  @keyframes heroSweep {
+    0%, 35% {
+      left: -55%;
+      opacity: 0;
+    }
+    45% { opacity: 1; }
+    75%, 100% {
+      left: 130%;
+      opacity: 0;
+    }
+  }
+
+  .hero-balloons {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .lux-star {
+    position: absolute;
+    width: var(--star-size, 7px);
+    height: var(--star-size, 7px);
+    opacity: 0;
+    color: #fff5d9;
+    animation:
+      starTwinkle
+      var(--star-duration, 3.2s)
+      ease-in-out
+      var(--star-delay, 0s)
+      infinite;
+    filter: drop-shadow(0 0 4px rgba(255,229,166,.75));
+  }
+
+  .lux-star::before,
+  .lux-star::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background: currentColor;
+    border-radius: 100%;
+    transform: translate(-50%, -50%);
+  }
+
+  .lux-star::before {
+    width: 100%;
+    height: 22%;
+  }
+
+  .lux-star::after {
+    width: 22%;
+    height: 100%;
+  }
+
+  .lux-star.star-soft {
+    color: #fffdf4;
+    filter: drop-shadow(0 0 5px rgba(255,245,215,.9));
+  }
+
+  .lux-star.star-gold {
+    color: #e8c987;
+    filter: drop-shadow(0 0 5px rgba(213,177,104,.8));
+  }
+
+  .lux-star.star-diamond {
+    width: calc(var(--star-size, 7px) * 1.3);
+    height: calc(var(--star-size, 7px) * 1.3);
+    clip-path: polygon(
+      50% 0, 60% 38%, 100% 50%,
+      60% 62%, 50% 100%, 40% 62%,
+      0 50%, 40% 38%
+    );
+    background: currentColor;
+  }
+
+  @keyframes starTwinkle {
+    0%, 100% {
+      opacity: 0;
+      transform: scale(.45) rotate(0deg);
+    }
+    25% { opacity: .35; }
+    50% {
+      opacity: .95;
+      transform: scale(1) rotate(45deg);
+    }
+    75% { opacity: .45; }
+  }
+
+  .hero-balloons .star-glow {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background: rgba(255,250,231,.9);
+    box-shadow: 0 0 7px 2px rgba(255,235,184,.45);
+    animation: glowPulse 3.6s ease-in-out infinite;
+  }
+
+  @keyframes glowPulse {
+    0%, 100% {
+      opacity: .15;
+      transform: scale(.7);
+    }
+    50% {
+      opacity: .85;
+      transform: scale(1.35);
+    }
+  }
+
+  @media (max-width: 700px) {
+    .lux-star {
+      --star-size: 5px;
+    }
+
+    .hero-balloons .star-glow {
+      width: 2px;
+      height: 2px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero > img,
+    .hero::before,
+    .hero::after,
+    .lux-star,
+    .hero-balloons .star-glow {
+      animation: none !important;
+    }
+  }
+</style>
+
+<header class="hero">
+  <img
+    src="https://ngg-web-jew.s3.ap-southeast-1.amazonaws.com/web/pages/home/Enjoy/banner-01.png"
+    alt=""
+  />
+
+  <div class="hero-balloons" aria-hidden="true"></div>
+</header>
+
+<script>
+(function () {
+  const reduceMotion = window.matchMedia(
+    '(prefers-reduced-motion: reduce)'
+  ).matches;
+
+  const starLayer = document.querySelector('.hero-balloons');
+
+  if (!reduceMotion && starLayer) {
+    const stars = [
+      { x: 8, y: 24, size: 8, delay: -1.2, duration: 3.2, type: 'star-soft' },
+      { x: 17, y: 58, size: 5, delay: -2.1, duration: 4.1, type: 'star-gold' },
+      { x: 26, y: 32, size: 7, delay: -.4, duration: 3.5, type: 'star-diamond' },
+      { x: 36, y: 72, size: 4, delay: -2.7, duration: 4.4, type: 'star-gold' },
+      { x: 45, y: 20, size: 6, delay: -1.7, duration: 3.8, type: 'star-soft' },
+      { x: 54, y: 52, size: 8, delay: -.8, duration: 4.2, type: 'star-diamond' },
+      { x: 64, y: 30, size: 4, delay: -3.2, duration: 3.4, type: 'star-gold' },
+      { x: 72, y: 68, size: 7, delay: -1.4, duration: 4.5, type: 'star-soft' },
+      { x: 81, y: 25, size: 6, delay: -2.5, duration: 3.6, type: 'star-diamond' },
+      { x: 91, y: 53, size: 5, delay: -.6, duration: 4.0, type: 'star-gold' },
+      { x: 13, y: 42, size: 4, delay: -3.1, duration: 4.3, type: 'star-diamond' },
+      { x: 60, y: 78, size: 5, delay: -2.2, duration: 3.7, type: 'star-soft' }
+    ];
+
+    stars.forEach((item) => {
+      const star = document.createElement('span');
+      star.className = `lux-star ${item.type}`;
+      star.style.left = `${item.x}%`;
+      star.style.top = `${item.y}%`;
+      star.style.setProperty('--star-size', `${item.size}px`);
+      star.style.setProperty('--star-delay', `${item.delay}s`);
+      star.style.setProperty('--star-duration', `${item.duration}s`);
+      starLayer.appendChild(star);
+    });
+
+    [
+      [22, 19], [33, 46], [49, 65], [68, 18],
+      [77, 43], [88, 73], [5, 76], [57, 38]
+    ].forEach(([x, y], index) => {
+      const glow = document.createElement('span');
+      glow.className = 'star-glow';
+      glow.style.left = `${x}%`;
+      glow.style.top = `${y}%`;
+      glow.style.animationDelay = `${index * -0.47}s`;
+      starLayer.appendChild(glow);
+    });
+  }
+})();
+</script>
