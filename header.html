@@ -1,6 +1,6 @@
 
 <style>
-  .hero {
+  /* .hero {
     width: 100%;
     position: relative;
     overflow: hidden;
@@ -17,9 +17,9 @@
     animation:
       heroReveal 1.2s cubic-bezier(.2,.7,.2,1) both,
       heroDrift 18s ease-in-out 1.2s infinite alternate;
-  }
+  } */
 
-  .hero::before {
+  /* .hero::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -34,9 +34,9 @@
     );
     mix-blend-mode: screen;
     animation: heroGlow 8s ease-in-out infinite alternate;
-  }
+  } */
 
-  .hero::after {
+  /* .hero::after {
     content: "";
     position: absolute;
     z-index: 1;
@@ -54,7 +54,9 @@
     );
     transform: rotate(18deg);
     animation: heroSweep 7s ease-in-out 1.5s infinite;
-  }
+  } */
+
+  .header-hero img {width: 100%;}
 
   @keyframes heroReveal {
     from {
@@ -210,14 +212,23 @@
   }
 </style>
 
-<header class="hero">
+<!-- <header class="hero">
   <img
     src="https://ngg-web-jew.s3.ap-southeast-1.amazonaws.com/web/pages/home/Enjoy/banner-01.png"
     alt=""
   />
 
   <div class="hero-balloons" aria-hidden="true"></div>
-</header>
+</header> -->
+
+<div class="header-hero">
+  <img
+    src="https://ngg-web-jew.s3.ap-southeast-1.amazonaws.com/web/pages/home/Enjoy/banner-01.png"
+    alt=""
+  />
+ <div class="hero-balloons" aria-hidden="true"></div>
+</div>
+
 
 <script>
 (function () {
